@@ -1,0 +1,94 @@
+
+:root{
+  --base: #191724;
+  --overlay: #26233a;
+  --muted: #6e6a86;
+  --text: #e0def4;
+  --love: #eb6f92;
+  --gold: #f6c177;
+  --pine: #31748f;
+  --iris: #c4a7e7;
+}
+
+/* Selection  */
+::selection {
+  color: var(--text);
+  background: var(--overlay);
+}
+
+html{
+  font-family: monospace;
+  font-size: 30px;
+}
+
+body {
+  background-color: var(--base);
+  color: var(--text);
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+}
+
+li {
+  list-style-type: none;
+}
+
+ul {
+  padding: 0 0 0 0;
+}
+
+.clock {
+  background-color: var(--base) !important;
+  color: var(--pine) !important;
+  padding-top: 10%;
+}
+
+.formField {
+font-size: 1.3rem;
+background-color: var(--base);
+color: var(--text);
+border: 0;
+border-bottom: 2px solid var(--text);
+outline: none;
+width: 50%;
+}
+
+.separator {
+  color: var(--text);
+  width: 50%
+}
+
+.masterList {
+  display: flex;
+  justify-content:space-around;
+  padding-right: 5%;
+  padding-left: 5%;
+
+}
+
+/* link color Love */
+#love:hover {
+  color: var(--love) !important;
+}
+
+/* link color Pine */
+#pine:hover {
+  color: var(--pine) !important;
+}
+
+/* link color gold */
+#gold:hover {
+  color: var(--gold) !important;
+}
+
+/* link color iris */
+#iris:hover {
+  color: var(--iris) !important;
+}
+
+/* link color for twitter */
+#twitter:hover {
+  color: #1DA1F2 !important;
+}
