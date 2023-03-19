@@ -73,12 +73,12 @@ ul {
   color: var(--love) !important;
 }
 
-#pine:hover {
-  color: var(--pine) !important;
-}
-
 #gold:hover {
   color: var(--gold) !important;
+}
+
+#pine:hover {
+  color: var(--pine) !important;
 }
 
 #iris:hover {
