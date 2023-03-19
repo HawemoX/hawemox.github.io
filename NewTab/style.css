@@ -46,13 +46,13 @@ ul {
 }
 
 .formField {
-font-size: 1.3rem;
-background-color: var(--base);
-color: var(--text);
-border: 0;
-border-bottom: 2px solid var(--text);
-outline: none;
-width: 50%;
+  font-size: 1.3rem;
+  background-color: var(--base);
+  color: var(--text);
+  border: 0;
+  border-bottom: 2px solid var(--text);
+  outline: none;
+  width: 50%;
 }
 
 .separator {
@@ -68,27 +68,23 @@ width: 50%;
 
 }
 
-/* link color Love */
+/* link colours */
 #love:hover {
   color: var(--love) !important;
 }
 
-/* link color Pine */
 #pine:hover {
   color: var(--pine) !important;
 }
 
-/* link color gold */
 #gold:hover {
   color: var(--gold) !important;
 }
 
-/* link color iris */
 #iris:hover {
   color: var(--iris) !important;
 }
 
-/* link color for twitter */
 #twitter:hover {
   color: #1DA1F2 !important;
 }
