@@ -7,6 +7,7 @@
   --love: #eb6f92;
   --gold: #f6c177;
   --pine: #31748f;
+  --foam: #9ccfd8;
   --iris: #c4a7e7;
 }
 
@@ -79,6 +80,10 @@ ul {
 
 #pine:hover {
   color: var(--pine) !important;
+}
+
+#foam:hover {
+  color: var(--foam) !important;
 }
 
 #iris:hover {
