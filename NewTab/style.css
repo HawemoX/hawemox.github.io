@@ -1,4 +1,4 @@
-
+/* Rosé Pine Colour Scheme - https://rosepinetheme.com */
 :root{
   --base: #191724;
   --overlay: #26233a;
@@ -9,6 +9,20 @@
   --pine: #31748f;
   --foam: #9ccfd8;
   --iris: #c4a7e7;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --base: #faf4ed;
+    --overlay: #f2e9e1;
+    --muted: #9893a5;
+    --text: #575279;
+    --love: #b4637a;
+    --gold: #ea9d34;
+    --pine: #286983;
+    --foam: #56949f;
+    --iris: #907aa9;
+  }
 }
 
 /* Selection  */
