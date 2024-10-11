@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+
+        .container {
+            background-color: transparent;
+            text-align: center;
+        }
+
+        /* Card styling */
+        .card {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            background-color: white;
+            border: 8px solid black;  /* Thicker border to mimic Pokémon TCG cards */
+            border-radius: 20px;  /* More rounded corners */
+            padding: 20px;
+            width: 450px;  /* Wider card to better fit QR code and text */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);  /* Stronger shadow for depth */
+            margin-bottom: 20px;
+        }
+
+        .qr-code {
+            margin-right: 20px;
+        }
+
+        .code-text {
+            font-size: 20px;  /* Slightly larger text for better readability */
+            font-weight: bold;
+            text-align: left;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+
+        /* Center the content on smaller screens */
+        @media (max-width: 500px) {
+            .card {
+                flex-direction: column;
+                align-items: center;
+                padding: 15px;
+                width: 90%;
+            }
+
+            .qr-code {
+                margin: 0 0 15px 0;
+            }
+
+            .code-text {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Code display section -->
+    <div id="codeDisplay" class="card" style="display: none;">
+        <canvas id="qrCanvas" class="qr-code"></canvas>
+        <div class="code-text" id="codeText"></div>
+    </div>
+
+    <!-- Generate button -->
+    <button onclick="generateRandomQRCode()">Generate Random QR Code</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script>
+    // Predefined list of codes
+    let initialCodes = [
+        "ABC-1234-XYZ-789",
+        "DEF-5678-GHI-012",
+        "JKL-3456-MNO-345",
+        "PQR-7890-STU-678",
+        "VWX-4321-YZA-123"
+    ];
+
+    // Load remaining codes from localStorage or use initial list if not present
+    let codes = JSON.parse(localStorage.getItem("remainingCodes")) || initialCodes;
+
+    function generateRandomQRCode() {
+        if (codes.length === 0) {
+            alert("No more codes to display!");
+            return;
+        }
+
+        // Get a random index from the remaining codes
+        const randomIndex = Math.floor(Math.random() * codes.length);
+        const randomCode = codes[randomIndex];
+
+        // Remove the code from the list
+        codes.splice(randomIndex, 1);
+
+        // Save the updated list to localStorage
+        localStorage.setItem("remainingCodes", JSON.stringify(codes));
+
+        // Clear the previous display
+        document.getElementById("codeText").textContent = ''; 
+
+        // Show the card display
+        const codeDisplayDiv = document.getElementById("codeDisplay");
+        codeDisplayDiv.style.display = 'flex';
+
+        // Set the text
+        document.getElementById("codeText").textContent = "Code: " + randomCode;
+
+        // Generate the QR code
+        const qrCanvas = document.getElementById("qrCanvas");
+        new QRious({
+            element: qrCanvas,
+            value: randomCode,
+            size: 120  // Slightly larger QR code for better proportion
+        });
+    }
+</script>
+
+</body>
+</html>
