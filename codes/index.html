@@ -29,10 +29,10 @@
             border: 8px solid black;  /* Thicker border to mimic Pokémon TCG cards */
             border-radius: 20px;  /* More rounded corners */
             padding: 30px;  /* Increased padding for a larger look */
-            width: 600px;  /* Larger card width */
-            height: 200px; /* Set a larger height */
+            width: 300px;  /* Width of individual card */
+            height: 200px; /* Height of individual card */
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);  /* Stronger shadow for depth */
-            margin-bottom: 20px;
+            margin: 15px;  /* Space between cards in the grid */
         }
 
         .qr-code {
@@ -54,6 +54,7 @@
             border: none;
             border-radius: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 10px; /* Margin for the button */
         }
 
         button:hover {
@@ -76,6 +77,30 @@
 
         .reset-button:hover {
             background-color: #333; /* Darker on hover */
+        }
+
+        /* Grid for displaying multiple cards */
+        .grid {
+            display: flex;
+            flex-wrap: wrap;  /* Allow cards to wrap onto the next line */
+            justify-content: center; /* Center cards */
+            margin-top: 20px; /* Space above grid */
+        }
+
+        /* Styling for the number input */
+        input[type="number"] {
+            padding: 12px 24px; /* Same padding as button */
+            font-size: 16px; /* Same font size as button */
+            border: 2px solid black; /* Black border */
+            border-radius: 5px; /* Same border radius as button */
+            margin-left: 10px; /* Space between input and button */
+            background-color: white; /* White background */
+            color: black; /* Black text */
+        }
+
+        input[type="number"]:focus {
+            outline: none; /* Remove outline on focus */
+            border-color: #555; /* Darker border color on focus for visibility */
         }
 
         /* Center the content on smaller screens */
@@ -104,14 +129,14 @@
 <button class="reset-button" onclick="resetCodes()">Do Not Press</button>
 
 <div class="container">
-    <!-- Code display section -->
-    <div id="codeDisplay" class="card" style="display: none;">
-        <canvas id="qrCanvas" class="qr-code"></canvas>
-        <div class="code-text" id="codeText"></div>
+    <!-- Input for number of codes to generate -->
+    <div>
+        <input type="number" id="numCodes" min="1" max="5" value="1"> <!-- Removed label -->
+        <button onclick="generateMultipleQRCodes()">Generate QR Codes</button>
     </div>
 
-    <!-- Generate button -->
-    <button onclick="generateRandomQRCode()">Generate Random QR Code</button>
+    <!-- Code display section -->
+    <div id="codeGrid" class="grid"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
@@ -128,39 +153,62 @@
     // Load remaining codes from localStorage or use initial list if not present
     let codes = JSON.parse(localStorage.getItem("remainingCodes")) || initialCodes;
 
-    function generateRandomQRCode() {
-        if (codes.length === 0) {
-            alert("No more codes to display!");
+    // Function to generate multiple QR codes
+    function generateMultipleQRCodes() {
+        const numCodes = parseInt(document.getElementById("numCodes").value);
+        if (numCodes < 1 || numCodes > codes.length) {
+            alert("Invalid number of codes to generate!");
             return;
         }
 
-        // Get a random index from the remaining codes
-        const randomIndex = Math.floor(Math.random() * codes.length);
-        const randomCode = codes[randomIndex];
+        // Clear previous codes from the grid
+        const codeGrid = document.getElementById("codeGrid");
+        codeGrid.innerHTML = '';
 
-        // Remove the code from the list
-        codes.splice(randomIndex, 1);
+        // Generate specified number of QR codes
+        for (let i = 0; i < numCodes; i++) {
+            if (codes.length === 0) {
+                alert("No more codes to display!");
+                break;
+            }
 
-        // Save the updated list to localStorage
-        localStorage.setItem("remainingCodes", JSON.stringify(codes));
+            // Get a random index from the remaining codes
+            const randomIndex = Math.floor(Math.random() * codes.length);
+            const randomCode = codes[randomIndex];
 
-        // Clear the previous display
-        document.getElementById("codeText").textContent = ''; 
+            // Remove the code from the list
+            codes.splice(randomIndex, 1);
 
-        // Show the card display
-        const codeDisplayDiv = document.getElementById("codeDisplay");
-        codeDisplayDiv.style.display = 'flex';
+            // Save the updated list to localStorage
+            localStorage.setItem("remainingCodes", JSON.stringify(codes));
 
-        // Set the text
-        document.getElementById("codeText").textContent = "Code: " + randomCode;
+            // Create a card element for the QR code
+            const cardDiv = document.createElement("div");
+            cardDiv.className = "card";
 
-        // Generate the QR code
-        const qrCanvas = document.getElementById("qrCanvas");
-        new QRious({
-            element: qrCanvas,
-            value: randomCode,
-            size: 140  // Slightly larger QR code for better proportion
-        });
+            // Create a canvas for the QR code
+            const qrCanvas = document.createElement("canvas");
+            qrCanvas.className = "qr-code";
+
+            // Generate the QR code
+            new QRious({
+                element: qrCanvas,
+                value: randomCode,
+                size: 140  // QR code size
+            });
+
+            // Create a text element for the code
+            const codeTextDiv = document.createElement("div");
+            codeTextDiv.className = "code-text";
+            codeTextDiv.textContent = "Code: " + randomCode;
+
+            // Append QR code and text to the card
+            cardDiv.appendChild(qrCanvas);
+            cardDiv.appendChild(codeTextDiv);
+
+            // Append the card to the grid
+            codeGrid.appendChild(cardDiv);
+        }
     }
 
     // Function to reset localStorage (Triggered by "Do Not Press" button)
