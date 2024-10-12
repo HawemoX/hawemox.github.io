@@ -3,223 +3,386 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Generator</title>
+    <title>Code Redeemer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
-            margin: 0;
         }
-
-        .container {
-            background-color: transparent;
-            text-align: center;
-        }
-
-        /* Card styling */
-        .card {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
+        .app-container {
             background-color: white;
-            border: 8px solid black;  /* Thicker border to mimic Pokémon TCG cards */
-            border-radius: 20px;  /* More rounded corners */
-            padding: 30px;  /* Increased padding for a larger look */
-            width: 300px;  /* Width of individual card */
-            height: 200px; /* Height of individual card */
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);  /* Stronger shadow for depth */
-            margin: 15px;  /* Space between cards in the grid */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            position: relative;
         }
-
-        .qr-code {
-            margin-right: 30px;  /* More space between QR code and text */
-        }
-
-        .code-text {
-            font-size: 28px;  /* Larger text for readability */
-            font-weight: bold;
-            text-align: left;
-        }
-
-        button {
-            padding: 12px 24px;
-            font-size: 16px;
-            cursor: pointer;
-            background-color: black; /* Changed button color to black */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-top: 10px; /* Margin for the button */
-        }
-
-        button:hover {
-            background-color: #333; /* Darker color on hover */
-        }
-
-        /* "Do Not Press" button styling */
-        .reset-button {
+        .code-counter {
             position: absolute;
             top: 10px;
-            left: 10px;
+            right: 10px;
+            font-weight: bold;
+        }
+        .code-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+        .code-item {
+            background-color: #e7e7e7;
             padding: 10px;
-            background-color: black; /* Set the "Do Not Press" button to black */
-            color: white;
-            border: none;
+            margin-bottom: 5px;
             border-radius: 5px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        .reset-button:hover {
-            background-color: #333; /* Darker on hover */
-        }
-
-        /* Grid for displaying multiple cards */
-        .grid {
-            display: flex;
-            flex-wrap: wrap;  /* Allow cards to wrap onto the next line */
-            justify-content: center; /* Center cards */
-            margin-top: 20px; /* Space above grid */
-        }
-
-        /* Styling for the number input */
-        input[type="number"] {
-            padding: 12px 24px; /* Same padding as button */
-            font-size: 16px; /* Same font size as button */
-            border: 2px solid black; /* Black border */
-            border-radius: 5px; /* Same border radius as button */
-            margin-left: 10px; /* Space between input and button */
-            background-color: white; /* White background */
-            color: black; /* Black text */
-        }
-
-        input[type="number"]:focus {
-            outline: none; /* Remove outline on focus */
-            border-color: #555; /* Darker border color on focus for visibility */
-        }
-
-        /* Center the content on smaller screens */
-        @media (max-width: 500px) {
-            .card {
-                flex-direction: column;
-                align-items: center;
-                padding: 15px;
-                width: 90%;
-                height: auto; /* Remove fixed height for smaller screens */
-            }
-
-            .qr-code {
-                margin: 0 0 15px 0;
-            }
-
-            .code-text {
-                text-align: center;
-            }
+            font-family: monospace;
         }
     </style>
 </head>
 <body>
 
-<!-- "Do Not Press" Button in the top-left corner -->
-<button class="reset-button" onclick="resetCodes()">Do Not Press</button>
-
-<div class="container">
-    <!-- Input for number of codes to generate -->
-    <div>
-        <input type="number" id="numCodes" min="1" max="5" value="1"> <!-- Removed label -->
-        <button onclick="generateMultipleQRCodes()">Generate QR Codes</button>
-    </div>
-
-    <!-- Code display section -->
-    <div id="codeGrid" class="grid"></div>
+<div class="app-container">
+    <div class="code-counter">Remaining Codes: <span id="codeCount"></span></div>
+    <ul class="code-list" id="codeList">
+        <!-- Code items will be injected here -->
+    </ul>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
 <script>
-    // Predefined list of codes
-    let initialCodes = [
-        "ABC-1234-XYZ-789",
-        "DEF-5678-GHI-012",
-        "JKL-3456-MNO-345",
-        "PQR-7890-STU-678",
-        "VWX-4321-YZA-123"
+    const codes = [
+    "6PG-HJQN-4JM-XX7",
+  "D72-7HTM-6C2-GNQ",
+  "LPC-CXJD-Q66-7X6",
+  "6GJ-Y7XY-NGJ-K2W",
+  "47P-RTNY-K2X-CKK",
+  "4RZ-YQ4Z-4J9-VQ4",
+  "MG4-4YRR-CMW-MHM",
+  "V72-ZRB4-NQV-CH9",
+  "PBP-HJR7-4Z7-4ZD",
+  "PGR-TDHV-VC7-VZY",
+  "4XD-2VRT-YWT-KJL",
+  "4G6-WLLB-V2N-CKL",
+  "9RQ-MJCY-PL2-W6N",
+  "DNG-9R9N-NKZ-BQV",
+  "279-WPTN-MDN-CMH",
+  "7NW-MZZ2-BRX-GTY",
+  "R67-WJ4V-X24-C26",
+  "B9D-QCLT-QNX-Q79",
+  "QGJ-NRDN-2LK-RO4",
+  "GBJ-2WN6-LVW-26W",
+  "Y2B-VRBT-TYB-GK4",
+  "YQH-ZZNV-2MJ-6RH",
+  "Y4M-676T-9VV-H99",
+  "YVM-Q4WL-V2R-B9P",
+  "6BB-WLLC-K2J-W6H",
+  "YNN-ZJHK-KHZ-P9C",
+  "QQ4-KQZJ-6N9-PBM",
+  "C7K-YBWR-Z2J-WJM",
+  "M4Y-BTQJ-2RR-2RJ",
+  "CDQ-2TCB-Q9W-ZBM",
+  "26J-JLVM-9BC-7CJ",
+  "QW2-4YB9-LM6-77Y",
+  "NDD-XNXJ-XW2-KPJ",
+  "49J-7LWJ-V7C-MTC",
+  "BLL-Q6MQ-PJG-9TC",
+  "K9X-YH67-XK9-YPK",
+  "YZ7-C7KW-RP2-KGC",
+  "YC2-R72Q-NWK-DNJ",
+  "YHX-DB76-MRX-ZYZ",
+  "YVT-6J2L-RVN-QLM",
+  "VBC-LPHH-QPK-LQL",
+  "NR2-9PZQ-CBD-HVW",
+  "W9J-BMJL-9ZY-V7K",
+  "XVH-BLXH-KY6-9G4",
+  "MZL-V4KK-VLK-KXH",
+  "DHC-KNCB-2NV-76Z",
+  "J66-C7QK-TRH-VQN",
+  "MPK-MWLG-Y7V-J4N",
+  "DY6-NB4C-2QD-YB4",
+  "DCL-9ZCH-6QH-JTK",
+  "DYX-TPW6-499-GHL",
+  "DNM-HBXW-B6L-GBP",
+  "DCD-9ZT6-T4Q-QXV",
+  "DZV-RCK2-97W-46R",
+  "DWX-PGRP-YGH-QJT",
+  "DRJ-HDMR-RXH-VHT",
+  "D6L-WVXL-H9Y-7YD",
+  "PNV-LZX9-PLP-LMN",
+  "H2D-QMXQ-HN6-ZVJ",
+  "H9J-9N4D-9VX-QNJ",
+  "HKV-6LYK-QLB-P77",
+  "HWN-4HKM-KKL-HRL",
+  "PL2-LZ6V-4JY-JW2",
+  "DB4-WXBD-HJL-4JN",
+  "9KT-VG7J-4PN-KHX",
+  "9BX-CMNJ-LGX-BQ7",
+  "9VW-XDX6-LPR-JXP",
+  "6TH-RGGT-C9V-MJZ",
+  "RKX-PZJC-4L9-YTY",
+  "9PQ-RTCT-6WN-9XM",
+  "9T7-JP44-T4W-7TB",
+  "974-69BR-R6H-ZQ4",
+  "9TC-D42B-D9D-T7P",
+  "9YY-Z2KQ-6DH-B9P",
+  "7LN-RXVM-HHT-MP9",
+  "C4T-LTBL-GR2-224",
+  "CLG-7QPM-TYT-2PR",
+  "CD9-YMQJ-RGM-R7Y",
+  "CBR-ZQHH-ZQL-9TQ",
+  "7TM-JVMK-BYV-NQR",
+  "7DR-KGBY-6MY-RB2",
+  "CXN-YKTH-ZQN-JYV",
+  "46L-DLZ4-XY6-LVV",
+  "KL2-7TWN-NDR-ZGP",
+  "KJJ-KDMN-M6T-MC2",
+  "KZ4-XWC9-ZJR-RCK",
+  "KGQ-R96C-LZX-NDD",
+  "KW4-B6TH-QQW-TTJ",
+  "K7D-DLMV-JKC-7GC",
+  "KGZ-CHL6-GCN-GHH",
+  "K9B-W4XC-KVJ-GDG",
+  "GLV-BQRY-MLK-7JK",
+  "9P4-MR6V-7VM-CGK",
+  "4JM-Q2XN-ZYT-H2G",
+  "9KG-2YNH-VGD-6ZY",
+  "4T7-TVRP-NX6-RCP",
+  "4YC-XMG7-76Z-RKN",
+  "9PD-WXYP-BML-44Z",
+  "7K2-CCQN-CVR-MVB",
+  "JCR-ZK9X-62X-CGC",
+  "DTB-HGJZ-4WQ-6TT",
+  "ZKH-CRPM-4M2-JHQ",
+  "VTH-VLQH-YP4-MZ4",
+  "CDV-YTVH-RPP-H2X",
+  "WW7-GCQC-TNY-6VY",
+  "WLC-4CYH-7GV-BK6",
+  "4J9-ZJL7-ZVB-NNV",
+  "QCK-44DH-R4R-4XK",
+  "WNY-DKRL-722-QYW",
+  "BVN-7J7J-DB9-7C6",
+  "ZDD-XXHW-7YV-7NW",
+  "KKR-Q6JZ-KC4-7BM",
+  "QCG-J6NY-YCN-XCK",
+  "HVZ-VLLC-PQP-DKR",
+  "GVD-K2C4-PCW-JCB",
+  "PCN-L2VL-7B9-RXZ",
+  "6D7-ZJBB-RKW-ZBD",
+  "6TD-2HJP-CVN-ZK7",
+  "QB4-DWW6-KLP-67G",
+  "PQM-Q72H-2M7-H2Y",
+  "DN4-XCTD-P2Y-CY6",
+  "CJG-NLW2-VN6-C9C",
+  "7XB-V9TK-JJG-PLG",
+  "DLN-G479-PKZ-NHK",
+  "PP9-7X7P-7YL-K4D",
+  "GCW-29BD-7QX-CZK",
+  "GZL-RR46-XWD-2BP",
+  "9YN-ZX4M-Z27-HCZ",
+  "GK9-KMQP-XGB-VWX",
+  "4JK-LTG4-9P4-R7Y",
+  "DJG-D7CZ-RLX-2MH",
+  "DJJ-YWVC-PGZ-XDR",
+  "WNJ-J9BX-2XK-XTH",
+  "QRC-G9TH-C74-K2D",
+  "KYT-J9Z4-GKP-WYM",
+  "KNW-6G9W-2VB-K9N",
+  "KGJ-TB7C-2NZ-PP4",
+  "66K-V694-LB9-6DM",
+  "PPG-TJB4-J9L-ZTK",
+  "9JJ-9VN2-QD2-YRB",
+  "NWH-WLZH-VRM-4QW",
+  "2VC-4TPZ-CL6-YMX",
+  "CKL-7JBH-RCM-Q4D",
+  "T9R-BHLL-KNL-CXD",
+  "TJL-BX6P-JKY-Q9H",
+  "RY4-VP22-WGX-C2B",
+  "ZT2-L49Y-RL4-DNG",
+  "GWP-6XKK-ZYM-9R6",
+  "LPR-N9JM-NQ6-LMJ",
+  "CPP-ZMCQ-2BD-ZHR",
+  "CJ7-L9H9-NCW-DLM",
+  "9P6-26YK-VNQ-P9T",
+  "9D6-RNK2-NRX-67N",
+  "6YD-PGXV-MX4-JK7",
+  "RQ2-GMQQ-DJY-ZKK",
+  "J24-Q4LK-B2J-GHT",
+  "HMP-Q7JD-GDN-MKM",
+  "C7L-TDPP-LCK-49N",
+  "HKH-GDC9-NNR-GVZ",
+  "H2X-BW6C-PZ6-VY7",
+  "HKZ-92YR-97L-BBJ",
+  "HD9-MP9D-H7P-2BL",
+  "H7N-64ZC-MN6-QDD",
+  "H9X-KZGV-ZRN-CCV",
+  "6ZR-ZY6M-HT4-Z7Q",
+  "9RM-PM6X-YZ6-MQC",
+  "HWW-LZBN-VNT-Z92",
+  "HQ6-9PWT-VTT-Y6G",
+  "HMX-HQ64-2KC-ZBN",
+  "HKG-TJD9-THW-P49",
+  "CH4-XJ7K-YVD-DCQ",
+  "CJG-JWVQ-V9L-X9Z",
+  "C2Z-LQVH-JZ9-G79",
+  "JWH-4LQK-46M-N2B",
+  "JHD-Z6DY-4T7-DHL",
+  "9HJ-RLQB-KW6-H9C",
+  "7MY-TZPJ-76B-464",
+  "4RW-9T2G-MGW-YNT",
+  "CV9-LKDK-RYV-QVP",
+  "9R4-MMGC-2WW-P7H",
+  "HNG-26QL-LBX-7X7",
+  "7MY-TZPJ-768-464",
+  "VKH-JK9P-VJX-VHX",
+  "PB6-P4TL-M9V-VVC",
+  "ZVR-QL2W-TBJ-7N6",
+  "RGT-CD77-7P7-MZW",
+  "7YQ-W7WQ-MP7-Q2M",
+  "726-6WHZ-Y6W-PRQ",
+  "72B-6HGC-2BK-KR9",
+  "6Y2-VLK2-C77-VNG",
+  "GM9-TPVY-CVK-6VN",
+  "HLK-P6NC-C6B-BMN",
+  "DYT-4HD6-42Z-NG2",
+  "6ZQ-R9WY-ZQX-6NQ",
+  "DEM-MLVJ-ZVC-ZJ6",
+  "PNW-MLXT-WWV-QRY",
+  "P9B-HYYX-DY9-T6B",
+  "P24-CLZC-YC9-72L",
+  "PLI-G28K-097-MUL",
+  "PWM-WOWQ-YW7-YNL",
+  "PGK-HM6V-ZTQ-GXR",
+  "KTG-ZZRM-L4G-6V2",
+  "BBK-P2N9-4PB-NKD",
+  "P2J-P66C-QBV-DGJ",
+  "4XG-PTW4-2PV-CYH",
+  "MH7-9CHM-KOX-XTC",
+  "G7G-009G-MR2-GZI",
+  "G2Z-XKPH-Z7X-7QY",
+  "6ML-6TNV-ZNQ-WHN",
+  "Q6Y-HHGG-R4G-ZN6",
+  "629-JBBR-NHD-ZV4",
+  "69Y-JBYM-X4B-J4L",
+  "V2J-XTD9-MPJ-2VZ",
+  "RZP-TDKC-4J2-LNT",
+  "TK4-D2MW-6WW-QZX",
+  "ZC9-DR47-9HB-Y4J",
+  "HHX-7JR4-MJY-2GZ",
+  "XM2-276H-DGM-ZY9",
+  "JH9-RDKP-4CM-GTW",
+  "VRV-ZQR9-9VL-PW7",
+  "6M9-TPVY-CVK-6VN",
+  "ZC9-DR47-9HB-YAJ",
+  "69Y-JBYM-X4B-JAL",
+  "MH7-9CHM-KQX-XTC",
+  "G7G-QQ9G-MR2-GZT",
+  "DCM-MLVJ-ZVC-ZJ6",
+  "79M-RW2Y-JCV-ZB2",
+  "7W6-RHMX-TRH-HPK",
+  "7LZ-NYCX-4T7-MPQ",
+  "7ZV-GRVX-JTD-4R9",
+  "7ML-MMKQ-6PT-YRJ",
+  "7RV-VDVX-6RC-BGP",
+  "79Z-XYL9-W7H-VNV",
+  "7N2-7RHW-7K6-RBT",
+  "KP2-7QGZ-7Q4-LCD",
+  "ZHT-9HRQ-JYR-YDN",
+  "V4G-CBW6-7WH-PDT",
+  "ZXT-2XZJ-CYG-GZK",
+  "7Q7-D7XZ-KX7-K9V",
+  "XMM-BDLK-WPN-BXJ",
+  "GPY-T4ZG-2JD-TTP",
+  "GZV-PQY7-HVD-XJK",
+  "Q64-JQJD-2RZ-WCV",
+  "6LY-DRG9-J7W-CPL",
+  "QXZ-RZQV-TNP-DCH",
+  "HZD-HJJK-LDH-R6Q",
+  "VTV-JYG9-RNN-N2Z",
+  "MCR-QZ9G-KRK-R2Z",
+  "RZ7-JH4W-6TG-ZXH",
+  "9C7-Q7MD-DKZ-Z97",
+  "B2C-YHRR-CMH-4VN",
+  "B28-CB64-BHV-DV6",
+  "QPG-HBRM-P9D-DWZ",
+  "PLK-B4ZY-Y6C-7N2",
+  "GNG-KZX9-KN4-YQR",
+  "GYD-I76B-CJL-V62",
+  "9JC-ZLDX-DLY-LMW",
+  "PNG-YBZ2-PLK-4TX",
+  "ZKN-ZW4K-JQD-L22",
+  "7WC-BD9Z-M4X-GJN",
+  "GWV-NMXR-CHH-6TW",
+  "2CD-9HT9-RM4-GLN",
+  "YTV-729P-XCB-BTG",
+  "YNY-ZNMT-JW2-7DV",
+  "9GY-YG7C-99Q-QBL",
+  "H2M-ZDRX-XC2-NKX",
+  "9Q4-JDWZ-9CB-R7D",
+  "KDC-M97N-WWZ-XGR",
+  "4BT-JCCJ-KJ9-BVD",
+  "4RL-CZWP-R9C-PC4",
+  "MWV-XJB6-NGN-QHV",
+  "MZM-J24N-MP9-ZPG",
+  "DYC-4M7N-BDC-9LY",
+  "XTB-R9WP-CHH-4BV",
+  "74D-WB7Y-TWG-JRN",
+  "CLX-2YVY-XGL-ZZT",
+  "QXH-B67Y-JG4-9VY",
+  "VZB-H4RZ-ZJD-P6D",
+  "JRV-WRPH-M9D-7GN",
+  "J4D-BLPL-CM6-2VV",
+  "JPT-MRKJ-KH6-6BX",
+  "JZ6-KZ7Z-VPC-LKR",
+  "JJR-CVC4-CQB-N6Q",
+  "9GW-2XXX-RLR-GP9",
+  "J7P-PRRY-GDX-7ZC",
+  "JHB-Q9P2-CJT-PWK",
+  "JNJ-B6WZ-XCR-T9X",
+  "JQJ-TL9B-GXR-K7L",
+  "JLD-2X77-4PT-ZGW",
+  "WH7-T9G9-QBX-9TY",
+  "PVY-VDGW-CHX-LHB",
+  "DLR-LWLC-MXG-X2L",
+  "9NN-JPGB-JCR-DJG",
+  "4W4-T7ZW-K7Y-R6B",
+  "HQZ-2DGN-CTD-Z42",
+  "Q2P-XL77-VJZ-QGV",
+  "HQZ-9BPL-JQ9-66Q",
+  "DGY-WMQT-4LT-XD6",
+  "DYR-7KYG-XNH-XPJ",
+  "9RM-BXHC-P7T-PCT",
+  "4B9-ZVRC-T42-ZCT",
+  "XC4-DML6-RQL-NK9",
+  "V6B-L2Q9-96Y-2RL",
+  "4NG-PKMC-LQK-NHV",
+  "DKX-DBVQ-X6W-LTG",
+  "XW7-29DV-XW4-2TB"
     ];
 
-    // Load remaining codes from localStorage or use initial list if not present
-    let codes = JSON.parse(localStorage.getItem("remainingCodes")) || initialCodes;
 
-    // Function to generate multiple QR codes
-    function generateMultipleQRCodes() {
-        const numCodes = parseInt(document.getElementById("numCodes").value);
-        if (numCodes < 1 || numCodes > codes.length) {
-            alert("Invalid number of codes to generate!");
-            return;
-        }
+    // Inject the codes into the HTML
+    const codeList = document.getElementById('codeList');
+    const codeCount = document.getElementById('codeCount');
 
-        // Clear previous codes from the grid
-        const codeGrid = document.getElementById("codeGrid");
-        codeGrid.innerHTML = '';
+    // Function to update the code list and counter
+    function updateCodeList() {
+        codeList.innerHTML = ''; // Clear the list
+        codes.forEach(code => {
+            const li = document.createElement('li');
+            li.className = 'code-item';
+            li.textContent = code;
+            codeList.appendChild(li);
+        });
 
-        // Generate specified number of QR codes
-        for (let i = 0; i < numCodes; i++) {
-            if (codes.length === 0) {
-                alert("No more codes to display!");
-                break;
-            }
-
-            // Get a random index from the remaining codes
-            const randomIndex = Math.floor(Math.random() * codes.length);
-            const randomCode = codes[randomIndex];
-
-            // Remove the code from the list
-            codes.splice(randomIndex, 1);
-
-            // Save the updated list to localStorage
-            localStorage.setItem("remainingCodes", JSON.stringify(codes));
-
-            // Create a card element for the QR code
-            const cardDiv = document.createElement("div");
-            cardDiv.className = "card";
-
-            // Create a canvas for the QR code
-            const qrCanvas = document.createElement("canvas");
-            qrCanvas.className = "qr-code";
-
-            // Generate the QR code
-            new QRious({
-                element: qrCanvas,
-                value: randomCode,
-                size: 140  // QR code size
-            });
-
-            // Create a text element for the code
-            const codeTextDiv = document.createElement("div");
-            codeTextDiv.className = "code-text";
-            codeTextDiv.textContent = "Code: " + randomCode;
-
-            // Append QR code and text to the card
-            cardDiv.appendChild(qrCanvas);
-            cardDiv.appendChild(codeTextDiv);
-
-            // Append the card to the grid
-            codeGrid.appendChild(cardDiv);
-        }
+        // Update the remaining code count
+        codeCount.textContent = codes.length;
     }
 
-    // Function to reset localStorage (Triggered by "Do Not Press" button)
-    function resetCodes() {
-        if (confirm("Are you sure you want to reset the codes?")) {
-            localStorage.removeItem("remainingCodes");
-            codes = initialCodes; // Reset codes array to the initial list
-            alert("All codes have been reset!");
-            location.reload(); // Reload the page to reset the display
-        }
-    }
+    // Initialize the app
+    updateCodeList();
 </script>
 
 </body>
