@@ -4,67 +4,149 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Tab</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="icon" href="./favicon.ico" type="image/x-icon">
   </head>
+
   <body>
-    <main>
-      <header>
-       <div class="clock">
-        <span id="hours">69</span><span>:</span><span id="minutes">420</span>
-       </div>
-       <div class="greet">
-        <h0 id="greetigns">~ ❯ Welcome @HawemoX</h0>
-       </div>
-       <br>
-       <div class="form">
-        <form action="https://duckduckgo.com/" method="get">
-         <input class="formField" placeholder="Search with DuckDuckGo" name="q" autocomplete="off">
-        </form>
-       </div>
-       <br>
-      </header>
-      <article>
-       <div class="list">
-        <ul class="masterList">
-         <li class="child">
-          <ul>
-            <li><p>Watch</p></li>
-            <li><a id="love" style="color: var(--text)" href="https://youtube.com">YouTube</a></li>
-            <li><a id="iris" style="color: var(--text)" href="https://twitch.tv">Twitch</a></li>
-            <li><a id="pine" style="color: var(--text)" href="https://gogoanime.gr">Anime</a></li>
-            <li><a id="gold" style="color: var(--text)" href="https://dopebox.to">Movies</a></li>
-          </ul>
-         </li>
-         <li class="child">
-          <ul>
-            <li><p>Learn</p></li>
-            <li><a id="iris" style="color: var(--text)" href="https://udemy.com">Udemy</a></li>
-            <li><a id="pine" style="color: var(--text)" href="https://freecodecamp.org">FreeCodeCamp</a></li>
-            <li><a id="foam" style="color: var(--text)" href="https://duolingo.com/">Duolingo</a></li>
-            <li><a id="gold" style="color: var(--text)" href="https://app.memrise.com">Memrise</a></li>
-          </ul>
-         </li>
-         <li class="child">
-          <ul>
-           <li><p>Social</p></li>
-           <li><a id="love" style="color: var(--text)" href="https://reddit.com">Reddit</a></li>
-           <li><a id="twitter" style="color: var(--text)" href="https://twitter.com">Twitter</a></li>
-           <li><a id="iris" style="color: var(--text)" href="https://discord.com">Discord</a></li>
-          </ul>
-         </li>
-         <li class="child">
-          <ul>
-           <li><p>Other</p></li>
-           <li><a id="love" style="color: var(--text)" href="https://github.com">GitHub</a></li>
-           <li><a id="pine" style="color: var(--text)" href="https://wiki.archlinux.org/">ArchWiki</a></li>
-           <li><a id="iris" style="color: var(--text)" href="https://flagle-game.com/">Flagle</a></li>
-          </ul>
-         </li>
-        </ul>
-       </div>
-      </article>
-    </main>
-    <script src="./script.js"></script>
+
+    <div id="toDashboard" class="arrowBtn">→</div>
+
+    <!-- PAGE 1 -->
+    <section id="pageMain" class="page active">
+
+      <main>
+        <header>
+          <div class="clock">
+            <span id="hours">00</span><span>:</span><span id="minutes">00</span>
+          </div>
+
+          <div class="greet">
+            <h0>~ ❯ Welcome @HawemoX</h0>
+          </div>
+
+          <br>
+
+          <div class="form">
+            <form action="http://192.168.1.45:8888/search" method="get">
+              <input class="formField" placeholder="Search with SearXNG" name="q" autocomplete="off">
+            </form>
+          </div>
+          <br>
+        </header>
+
+        <article>
+          <div class="list">
+            <ul class="masterList">
+
+              <li class="child">
+                <ul>
+                  <li><p><i>Watch</i></p></li>
+                  <li><a id="love" href="https://youtube.com">YouTube</a></li>
+                  <li><a id="iris" href="https://twitch.tv">Twitch</a></li>
+                  <li><a id="pine" href="https://gogoanime.gr">Anime</a></li>
+                  <li><a id="gold" href="https://dopebox.to">Movies</a></li>
+                </ul>
+              </li>
+
+              <li class="child">
+                <ul>
+                  <li><p><i>Learn</i></p></li>
+                  <li><a id="iris" href="https://udemy.com">Udemy</a></li>
+                  <li><a id="pine" href="https://freecodecamp.org">FreeCodeCamp</a></li>
+                  <li><a id="foam" href="https://duolingo.com/">Duolingo</a></li>
+                  <li><a id="gold" href="https://app.memrise.com">Memrise</a></li>
+                </ul>
+              </li>
+
+              <li class="child">
+                <ul>
+                  <li><p><i>Social</i></p></li>
+                  <li><a id="love" href="https://reddit.com">Reddit</a></li>
+                  <li><a id="twitter" href="https://twitter.com">Twitter</a></li>
+                  <li><a id="iris" href="https://discord.com">Discord</a></li>
+                </ul>
+              </li>
+
+              <li class="child">
+                <ul>
+                  <li><p><i>Other</i></p></li>
+                  <li><a id="love" href="https://github.com">GitHub</a></li>
+                  <li><a id="pine" href="https://wiki.archlinux.org/">ArchWiki</a></li>
+                  <li><a id="iris" href="https://flagle-game.com/">Flagle</a></li>
+                </ul>
+              </li>
+
+            </ul>
+          </div>
+        </article>
+
+      </main>
+
+    </section>
+
+    <!-- PAGE 2 DASHBOARD -->
+    <section id="pageDash" class="page">
+
+      <div id="fromDashboard" class="arrowBtn">←</div>
+
+      <div class="dashboardHeader">
+        <h0>/home/hawemox/oxlab</h0>
+      </div>
+
+      <div class="grid">
+
+        <div class="group">
+          <p><i>Infrastructure</i></p>
+          <a id="tplink" href="http://192.168.1.1">tp-link</a>
+          <a id="unifi" href="http://192.168.1.40">Unifi Controller</a>
+          <a id="proxmox" href="https://192.168.1.20:8006">Prox-Arceus</a>
+          <a id="truenas" href="http://192.168.1.38">TrueNAS</a>
+          <a id="adguard" href="http://192.168.1.38">AdGuard</a>
+          <a id="nginx" href="http://192.168.1.38">Nginx</a>
+        </div>
+
+        <div class="group">
+          <p><i>Monitoring</i></p>
+          <a id="foam" href="http://192.168.1.44:5216/">MySpeed</a>
+          <a id="gold" href="#">Uptime Kuma</a>
+          <a id="love" href="http://192.168.1.79:8090">Beszel</a>
+        </div>
+
+        <div class="group">
+          <p><i>Arr Stack</i></p>
+          <a id="gold" href="http://192.168.1.52:7878">Radarr</a>
+          <a id="love" href="http://192.168.1.53:8989">Sonarr</a>
+          <a id="pine" href="http://192.168.1.54:8686">Lidarr</a>
+          <a id="iris" href="http://192.168.1.51:5055">Jellyseerr</a>
+        </div>
+
+        <div class="group">
+          <p><i>Media</i></p>
+          <a id="pine" href="http://192.168.1.49:8096">Jellyfin</a>
+          <a id="foam" href="#">Jellystat</a>
+          <a id="iris" href="#">Swing Music</a>
+          <a id="gold" href="#">Audiobookshelf</a>
+        </div>
+
+        <div class="group">
+          <p><i>Torrenting</i></p>
+          <a id="pine" href="http://192.168.1.58:9117/UI/Dashboard">Jackett</a>
+          <a id="gold" href="http://192.168.1.59:9091">Transmission</a>
+          <a id="love" href="#">qBittorrent</a>
+        </div>
+
+        <div class="group">
+          <p><i>Files & Tools</i></p>
+          <a id="gold" href="http://192.168.1.62:3000">ConvertX</a>
+          <a id="foam" href="http://192.168.1.63:8080/">Stirling PDF</a>
+          <a id="iris" href="#">Filebrowser</a>
+        </div>
+
+      </div>
+
+    </section>
+
+    <script src="script.js"></script>
   </body>
 </html>
