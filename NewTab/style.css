@@ -1,4 +1,4 @@
-/* Rosé Pine Colour Scheme - https://rosepinetheme.com */
+/* Rosé Pine */
 :root{
   --base: #191724;
   --overlay: #26233a;
@@ -11,99 +11,95 @@
   --iris: #c4a7e7;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --base: #faf4ed;
-    --overlay: #f2e9e1;
-    --muted: #9893a5;
-    --text: #575279;
-    --love: #b4637a;
-    --gold: #ea9d34;
-    --pine: #286983;
-    --foam: #56949f;
-    --iris: #907aa9;
-  }
-}
+html { font-family: monospace; font-size: 30px; }
+body { background: var(--base); color: var(--text); margin: 0; text-align: center; }
 
-/* Selection  */
-::selection {
-  color: var(--text);
-  background: var(--overlay);
-}
+/* CLOCK */
+.clock { color: var(--pine); padding-top: 10%; }
 
-html{
-  font-family: monospace;
-  font-size: 30px;
-}
-
-body {
-  background-color: var(--base);
-  color: var(--text);
-  text-align: center;
-}
-
-a {
-  text-decoration: none;
-}
-
-li {
-  list-style-type: none;
-}
-
-ul {
-  padding: 0 0 0 0;
-}
-
-.clock {
-  background-color: var(--base) !important;
-  color: var(--pine) !important;
-  padding-top: 10%;
-}
-
+/* SEARCH */
 .formField {
-  font-size: 1.3rem;
-  background-color: var(--base);
+  background: var(--base);
   color: var(--text);
   border: 0;
   border-bottom: 2px solid var(--text);
-  outline: none;
   width: 50%;
+  outline: none;
+  font-size: 1.3rem;
 }
 
-.separator {
-  color: var(--text);
-  width: 50%
-}
-
+/* PAGE 1 LIST */
 .masterList {
   display: flex;
-  justify-content:space-around;
-  padding-right: 5%;
-  padding-left: 5%;
-
+  justify-content: space-around;
+  padding: 0 5%;
 }
 
-/* link colours */
-#love:hover {
-  color: var(--love) !important;
+a { color: var(--text); text-decoration: none; }
+li { list-style: none; }
+
+/* HOVER COLORS */
+#love:hover { color: var(--love); }
+#gold:hover { color: var(--gold); }
+#pine:hover { color: var(--pine); }
+#foam:hover { color: var(--foam); }
+#iris:hover { color: var(--iris); }
+#twitter:hover { color: #1DA1F2; }
+#unifi:hover { color: #0150c5; }
+#proxmox:hover { color: #e57408; }
+#truenas:hover { color: #0094d4; }
+#adguard:hover { color: #68bd72; }
+#nginx:hover { color: #4e984f; }
+#tplink:hover { color: #4fccd7; }
+
+/* PAGE TOGGLE */
+.page { display: none; }
+.page.active { display: block; animation: fadeIn .25s ease; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ARROWS */
+.arrowBtn {
+  position: fixed;
+  top: 10px;
+  font-size: 1.4rem;
+  opacity: .4;
+  cursor: pointer;
+  padding: 4px;
+  transition: .15s;
+}
+.arrowBtn:hover { opacity: 1; }
+#toDashboard { right: 15px; }
+#fromDashboard { left: 15px; }
+
+/* DASHBOARD HEADER */
+.dashboardHeader {
+  padding-top: 5%;
+  margin-bottom: 2rem;
 }
 
-#gold:hover {
-  color: var(--gold) !important;
+/* GRID (restored) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  width: 80%;
+  margin: 0 auto;
+  text-align: left;
 }
 
-#pine:hover {
-  color: var(--pine) !important;
+/* GROUP STYLE (minimal, no cards) */
+.group p {
+  font-size: 1rem;
+  margin-bottom: 10px;
 }
 
-#foam:hover {
-  color: var(--foam) !important;
+.group a {
+  display: block;
+  margin: 6px 0;
 }
 
-#iris:hover {
-  color: var(--iris) !important;
-}
 
-#twitter:hover {
-  color: #1DA1F2 !important;
+i {
+  color: var(--muted);
 }
