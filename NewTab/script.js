@@ -1,25 +1,28 @@
-/*
-function displayTime(){
-  var dateTime = new Date();
-  var hrs = dateTime.getHours();
-  var min = dateTime.getMinutes();
-
-  document.getElementById('hours').innerHTML = hrs;
-  document.getElementById('minutes').innerHTML = min;
-}
-setInterval(displayTime, 10);
-*/
-
+/* CLOCK */
 function displayTime() {
-  var dateTime = new Date();
-  var hrs = dateTime.getHours();
-  var min = dateTime.getMinutes();
-  
-  // Pad single-digit minutes with leading zero
+  const dateTime = new Date();
+  let hrs = dateTime.getHours();
+  let min = dateTime.getMinutes();
+
   min = min < 10 ? "0" + min : min;
 
-  document.getElementById('hours').innerHTML = hrs;
-  document.getElementById('minutes').innerHTML = min;
+  document.getElementById('hours').textContent = hrs;
+  document.getElementById('minutes').textContent = min;
 }
 
-setInterval(displayTime, 10);
+setInterval(displayTime, 1000);
+displayTime();
+
+/* PAGE SWITCHING */
+const pageMain = document.getElementById("pageMain");
+const pageDash = document.getElementById("pageDash");
+
+document.getElementById("toDashboard").onclick = () => {
+  pageMain.classList.remove("active");
+  pageDash.classList.add("active");
+};
+
+document.getElementById("fromDashboard").onclick = () => {
+  pageDash.classList.remove("active");
+  pageMain.classList.add("active");
+};
